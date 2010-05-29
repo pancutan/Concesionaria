@@ -1,14 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package concesionaria;
 
-/**
- *
- * @author s
- */
-public class TransporteCarga {
+public class TransporteCarga extends Transporte {
 
+  int capacidadCarga;
+  String transmisionTipo;
 }
