@@ -12,8 +12,10 @@ import javax.swing.JOptionPane;
 
 public class Calculador {
 
-  //Un HashMap contendra todo el archivo ordenado en memoria
+  //Dos HashMaps leeran inicialmente el contenido de los archivos
   private HashMap diccionario_vehiculos = new HashMap();
+
+  HashMap diccionario_coeficientes = new HashMap();
 
   /*Este es el constructor. Es un metodo que se dispara automaticamente
   durante la instancia de cualquier objeto de tipo Calculador */
@@ -165,9 +167,6 @@ public class Calculador {
       //enPedacitos recibirá las partes de esa linea que esten entre ,
       String[] enPedacitos = null;
 
-      //Un HashMap contendra todo el archivo ordenado en memoria
-      HashMap diccionario_coeficientes = new HashMap();
-
       /*
        * Cualquiera sea el tipo de vehículo, el calculo del precio de venta se realiza mediante el siguiente método:
       Precio Venta = Precio de Fabrica * 1.21 + Utilidad + Impuestos
@@ -177,8 +176,8 @@ public class Calculador {
       Las utilidades  se obtienen de una tabla (archivo.txt) que contiene los valores correspondientes a cada marca de vehículo. Estos valores deben poder modificarse si es necesario.
        */
 
-      // Lectura del archivo:
 
+      // Lectura del archivo:
       //-----------------------------------------------------------------
       //Recorremos todo el archivo, mientras sea distinto de nulo
       while ((linea = br2.readLine()) != null) {
@@ -186,16 +185,13 @@ public class Calculador {
 
         /*Los diccionarios requieren de dos parametros: un valor (distinto)
          * para encontrar univocamente el dato, y el dato en sí mismo).
-         * En este caso, podemos ocupar el año, que sabemo que no está repetido,
+         * En este caso, podemos ocupar el año, que sabemos que no está repetido,
          * como valor "llave" para encontrar un coeficiente en particular.
          */
-        diccionario_coeficientes.put(new Integer(enPedacitos[0]), new Integer(enPedacitos[1]));
+        this.diccionario_coeficientes.put(new Integer(enPedacitos[0]), new Integer(enPedacitos[1]));
+      }      
 
-
-      }
-
-
-//Pongo a salvo el archivo contra cuelgues o caidas del sistema.
+      //Pongo a salvo el archivo contra cuelgues o caidas del sistema.
       //Si toda su información esta en RAM, no tiene sentido que siga abierto
       fr2.close();
       br2.close();
@@ -241,9 +237,9 @@ public class Calculador {
               + this.diccionario_vehiculos.get("carga-utilidades") + "\n");
 
       /*
-3010.3,41.5
-728.25,30.44
-2100.5,21.5
+      3010.3,41.5
+      728.25,30.44
+      2100.5,21.5
        */
 
 
@@ -255,8 +251,13 @@ public class Calculador {
     }
 
     JOptionPane.showMessageDialog(null, "Valores actualizados");
-
   }
-}//Fin public class Main {
+
+
+  public HashMap getDiccionario_coeficientes() {
+    return diccionario_coeficientes;
+  }
+
+}//Fin class
 
 
