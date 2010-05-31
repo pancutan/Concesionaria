@@ -11,11 +11,24 @@
 
 package concesionaria;
 
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+
 /**
  *
  * @author s
  */
 public class GUITransporte extends javax.swing.JFrame {
+
+  private Integer transporteSeleccionado;
+
+  public Integer getTransporteSeleccionado() {
+    return this.transporteSeleccionado;
+  }
+
+
+
 
     /** Creates new form GUITransporte */
     public GUITransporte() {
@@ -32,22 +45,59 @@ public class GUITransporte extends javax.swing.JFrame {
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
-    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+    jScrollPane1 = new javax.swing.JScrollPane();
+    ListadoTransportes = new javax.swing.JList();
+
+    setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     setTitle("Seleccione Vehiculo de Transporte");
+    addWindowListener(new java.awt.event.WindowAdapter() {
+      public void windowClosing(java.awt.event.WindowEvent evt) {
+        formWindowClosing(evt);
+      }
+    });
+
+    ListadoTransportes.setModel(new javax.swing.AbstractListModel() {
+      String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+      public int getSize() { return strings.length; }
+      public Object getElementAt(int i) { return strings[i]; }
+    });
+    ListadoTransportes.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+      public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+        ListadoTransportesValueChanged(evt);
+      }
+    });
+    jScrollPane1.setViewportView(ListadoTransportes);
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 400, Short.MAX_VALUE)
+      .addGroup(layout.createSequentialGroup()
+        .addContainerGap()
+        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
+        .addContainerGap())
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 300, Short.MAX_VALUE)
+      .addGroup(layout.createSequentialGroup()
+        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     pack();
   }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+      // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowClosing
+
+    private void ListadoTransportesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ListadoTransportesValueChanged
+      this.transporteSeleccionado = 999;
+      JOptionPane.showMessageDialog(null, "Valor seleccionado");
+      //Revisar http://www.google.com/cse?cx=002683415331144861350%3Atsq8didf9x0&q=Java+Jlist&ie=utf-8&sa=Search
+      //para ver como detectar el click en los items
+
+    }//GEN-LAST:event_ListadoTransportesValueChanged
 
     /**
     * @param args the command line arguments
@@ -61,6 +111,8 @@ public class GUITransporte extends javax.swing.JFrame {
     }
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
+  private javax.swing.JList ListadoTransportes;
+  private javax.swing.JScrollPane jScrollPane1;
   // End of variables declaration//GEN-END:variables
 
 }
