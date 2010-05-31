@@ -8,17 +8,16 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import javax.swing.JOptionPane;
 
 public class Calculador {
 
+  //Un HashMap contendra todo el archivo ordenado en memoria
+  private HashMap diccionario_vehiculos = new HashMap();
+
   /*Este es el constructor. Es un metodo que se dispara automaticamente
-  durante la instancia de cualquier objeto de tipo Calculador
-   */
+  durante la instancia de cualquier objeto de tipo Calculador */
   public Calculador() {
-
-
-
-
     /**
      * ===============================================================
      * Comienza lectura del archivo que contiene los impuestos y las
@@ -53,18 +52,6 @@ public class Calculador {
 
       //enPedacitos recibirá las partes de esa linea que esten entre ,
       String[] enPedacitos = null;
-
-      //Un HashMap contendra todo el archivo ordenado en memoria
-      HashMap diccionario_vehiculos = new HashMap();
-
-      /*
-       * Cualquiera sea el tipo de vehículo, el calculo del precio de venta se realiza mediante el siguiente método:
-      Precio Venta = Precio de Fabrica * 1.21 + Utilidad + Impuestos
-
-      Los impuestos  se obtienen de una tabla (archivo.txt) que contiene los valores correspondientes a cada tipo de vehículo. Estos valores deben poder modificarse si es necesario.
-
-      Las utilidades  se obtienen de una tabla (archivo.txt) que contiene los valores correspondientes a cada marca de vehículo. Estos valores deben poder modificarse si es necesario.
-       */
 
       // Lectura del archivo:
 
@@ -143,8 +130,6 @@ public class Calculador {
 
 
 
-
-
     /* ===============================================================
      * Comienza lectura del archivo que contiene los coeficientes
      * ===============================================================
@@ -198,13 +183,13 @@ public class Calculador {
       //Recorremos todo el archivo, mientras sea distinto de nulo
       while ((linea = br2.readLine()) != null) {
         enPedacitos = linea.split(",");
-        
+
         /*Los diccionarios requieren de dos parametros: un valor (distinto)
          * para encontrar univocamente el dato, y el dato en sí mismo).
          * En este caso, podemos ocupar el año, que sabemo que no está repetido,
          * como valor "llave" para encontrar un coeficiente en particular.
          */
-        diccionario_coeficientes.put(new Integer(enPedacitos[0]),new Integer(enPedacitos[1]) );
+        diccionario_coeficientes.put(new Integer(enPedacitos[0]), new Integer(enPedacitos[1]));
 
 
       }
@@ -229,6 +214,49 @@ public class Calculador {
 
 
   }//fin public static void main(String[] args) {
+
+  /**
+   * @return the diccionario_vehiculos
+   */
+  public HashMap getDiccionario_vehiculos() {
+    return diccionario_vehiculos;
+  }
+
+  /**
+   * @param diccionario_vehiculos the diccionario_vehiculos to set
+   */
+  public void setDiccionario_vehiculos(HashMap diccio) {
+    //copio el nuevo diccionario sobre el viejo
+    this.diccionario_vehiculos = diccio;
+
+    //Actualizo el archivo.txt
+    try {
+      BufferedWriter out = new BufferedWriter(new FileWriter("archivo.txt", false));
+
+      out.write(this.diccionario_vehiculos.get("transporte-impuestos") + ","
+              + this.diccionario_vehiculos.get("transporte-utilidades") + "\n");
+      out.write(this.diccionario_vehiculos.get("particulares-impuestos") + ","
+              + this.diccionario_vehiculos.get("particulares-utilidades") + "\n");
+      out.write(this.diccionario_vehiculos.get("carga-impuestos") + ","
+              + this.diccionario_vehiculos.get("carga-utilidades") + "\n");
+
+      /*
+3010.3,41.5
+728.25,30.44
+2100.5,21.5
+       */
+
+
+      out.close();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    JOptionPane.showMessageDialog(null, "Valores actualizados");
+
+  }
 }//Fin public class Main {
 
 
