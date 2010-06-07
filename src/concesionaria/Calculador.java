@@ -8,14 +8,28 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 
+//Esta clase realiza lectura y escritura de archivos 
 public class Calculador {
 
-  //Dos HashMaps leeran inicialmente el contenido de los archivos
+  //Estos HashMaps se poblaran inicialmente con contenidos de varios
+  //archivo.txt
   private HashMap diccionario_vehiculos = new HashMap();
+  //coeficientes.txt
+  private HashMap diccionario_coeficientes = new HashMap();
+  //stock.txt
+  //private HashMap diccionario_stock = new HashMap();
+  //Para manejar vectores con objetos:
+  //http://www.forosdelweb.com/f45/array-objetos-488424/
+  //Arreglo de objetos de tipo Transporte de Carga
+  private Vector<TransporteCarga> vectorCarga = new Vector<TransporteCarga>();
 
-  HashMap diccionario_coeficientes = new HashMap();
+  private void llenaVectorCarga(TransporteCarga tc) {
+    this.vectorCarga.addElement(tc);
+  }
+
 
   /*Este es el constructor. Es un metodo que se dispara automaticamente
   durante la instancia de cualquier objeto de tipo Calculador */
@@ -189,7 +203,7 @@ public class Calculador {
          * como valor "llave" para encontrar un coeficiente en particular.
          */
         this.diccionario_coeficientes.put(new Integer(enPedacitos[0]), new Integer(enPedacitos[1]));
-      }      
+      }
 
       //Pongo a salvo el archivo contra cuelgues o caidas del sistema.
       //Si toda su información esta en RAM, no tiene sentido que siga abierto
@@ -204,6 +218,111 @@ public class Calculador {
      * ===============================================================
      * FIN lectura del archivo que contiene los coeficientes.
      * ===============================================================
+     */
+
+
+
+    /* ###############################################################
+     * Comienza lectura del archivo que contiene el stock
+     * ###############################################################
+     * Cuidado: este archivo, llamado stock.txt debe esta ubicado en
+     * la raiz del proyecto, no en src/concesionaria
+     *
+     * Contiene una información del tipo
+     *
+     * particular,fox,azul,2003,nafta,50000,10
+     * particular,palio,rojo,2005,nafta,45000,18
+     * pasajero,traffic,blanco,2001,gasoil,62000,5
+     * pasajero,nissan,crema,2002,gasoil,68000,4
+     * carga,scania,negro,2008,gasoil,200000,3
+     * carga,ford,blanco,2009,gasoil,180000,4
+     * ...
+     * etc
+     */
+
+
+    File archivo_stock = null;
+    FileReader fr3 = null;
+    BufferedReader br3 = null;
+
+    try {
+      // Apertura del fichero y creacion de BufferedReader para poder
+      // hacer una lectura comoda (disponer del metodo readLine()).
+      archivo_stock = new File("stock.txt");
+      fr3 = new FileReader(archivo_stock);
+      br3 = new BufferedReader(fr3);
+
+      //Linea leera lineas completas
+      String linea;
+
+      //enPedacitos recibirá las partes de esa linea que esten entre ,
+      String[] enPedacitos = null;
+
+      /*
+       * Cualquiera sea el tipo de vehículo, el calculo del precio de venta se realiza mediante el siguiente método:
+      Precio Venta = Precio de Fabrica * 1.21 + Utilidad + Impuestos
+
+      Los impuestos  se obtienen de una tabla (archivo.txt) que contiene los valores correspondientes a cada tipo de vehículo. Estos valores deben poder modificarse si es necesario.
+
+      Las utilidades  se obtienen de una tabla (archivo.txt) que contiene los valores correspondientes a cada marca de vehículo. Estos valores deben poder modificarse si es necesario.
+       */
+
+
+      // Lectura del archivo:
+      //-----------------------------------------------------------------
+      //Recorremos todo el archivo, mientras sea distinto de nulo
+      while ((linea = br3.readLine()) != null) {
+        enPedacitos = linea.split(",");
+
+        //this.diccionario_coeficientes.put(new Integer(enPedacitos[0]), new Integer(enPedacitos[1]));
+
+        //en lugar de usar un hashmap usaremos un array de objetos.
+        //He creado algunos setters en Transporte.java
+
+        if (enPedacitos[0].equals("carga")) {
+
+          TransporteCarga unTransporteCarga = new TransporteCarga();
+
+          //Relleno el objeto con los valores del archivo
+
+          unTransporteCarga.setMarca(enPedacitos[1]);
+          unTransporteCarga.setColor(enPedacitos[2]);
+
+          int aux = Integer.parseInt(enPedacitos[3]);
+          unTransporteCarga.setAnioFabricac(aux);
+
+          unTransporteCarga.setTipoCombustible(enPedacitos[4]);
+
+          double aux2 = Double.parseDouble(enPedacitos[5]);
+          unTransporteCarga.setPrecFabrica(aux2);
+
+          int aux3 = Integer.parseInt(enPedacitos[6]);
+          unTransporteCarga.setCantidadEnStock(aux3);
+
+          //por fin el objeto unTransporteCarga esta lleno: a mandarlo al Vector!
+          this.llenaVectorCarga(unTransporteCarga);
+
+          //ACA ME QUEDÉ:
+          //RELLENAR LOS OTROS VECTORES
+          //POBLAR LAS JLists con los objetos
+
+
+        }
+
+      }
+      //Pongo a salvo el archivo contra cuelgues o caidas del sistema.
+      //Si toda su información esta en RAM, no tiene sentido que siga abierto
+      fr3.close();
+      br3.close();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    /*
+     * ###############################################################
+     * FIN lectura del archivo que contiene el stock
+     * ###############################################################
      */
 
 
@@ -253,11 +372,9 @@ public class Calculador {
     JOptionPane.showMessageDialog(null, "Valores actualizados");
   }
 
-
   public HashMap getDiccionario_coeficientes() {
     return diccionario_coeficientes;
   }
-
 }//Fin class
 
 
