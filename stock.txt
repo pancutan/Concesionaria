@@ -1,4 +1,4 @@
-particular,fox,azul,2003,nafta,50000,10
+particular,fox,azul,2003,nafta,50000.40,10
 particular,palio,rojo,2005,nafta,45000,18
 pasajero,traffic,blanco,2001,gasoil,62000,5
 pasajero,nissan,crema,2002,gasoil,68000,4

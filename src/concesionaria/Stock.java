@@ -34,6 +34,7 @@ public class Stock {
             System.out.println(vectorCarga.elementAt(i).marca.toString());
             //Object <vectorCarga> o =<vectorCarga> vectorCarga.elementAt(i);
             String s = (String) vectorCarga.elementAt(i).getMarca();
+
             arreglo[i] = (String) vectorCarga.elementAt(i).getMarca();
             System.out.println(arreglo[i]);
 

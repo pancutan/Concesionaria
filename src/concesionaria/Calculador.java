@@ -194,7 +194,7 @@ public class Calculador {
                  * En este caso, podemos ocupar el año, que sabemos que no está repetido,
                  * como valor "llave" para encontrar un coeficiente en particular.
                  */
-                this.diccionario_coeficientes.put(new Integer(enPedacitos[0]), new Integer(enPedacitos[1]));
+                this.diccionario_coeficientes.put(new Integer(enPedacitos[0]), new Double(enPedacitos[1]));
             }
 
             //Pongo a salvo el archivo contra cuelgues o caidas del sistema.
